@@ -58,3 +58,10 @@ moras <- moras %>%
 view(moras)
 ```
 
+
+#Porcentaje valores faltantes
+```{r}
+#con col sums y is.na se calculara los na por columnas que hay en todas las columnas y adimas se divide por la cantidad de filas que hay y se multiplica por 100 para que quede en porcentaje
+colSums(is.na(moras))/nrow(moras)*100
+```
+
