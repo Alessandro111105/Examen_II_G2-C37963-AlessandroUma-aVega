@@ -241,7 +241,45 @@ gráfico_extranjero <-moras %>%
     theme_minimal()
 print(gráfico_sexo)
 
-#Note en este caso pasa igual, los gráficos son los mismos que en excel, por lo que se hará nuevamente el análisis
+#note en este caso pasa igual, los gráficos son los mismos que en excel, por lo que se hará nuevamente el análisis
 
+```
+
+#Gráficos morosidad según numéricas
+```{r}
+#lo que hacemos es agrupar por morosidad y con summarise calcular el promedio de la edad sin tomar en cuenta los NA, despues usamos al estrcutrua general para un gráfico en ggplot 2, además usamos scale_fill_manual para poder asignar colores a si es moroso o no es moroso
+edad_morosidad <- moras %>%
+  group_by(INDICADOR_MOROSO) %>%
+  summarise(promedio_edad = mean(EDAD, na.rm = TRUE))
+
+ggplot(edad_morosidad, aes(x = INDICADOR_MOROSO,
+                           y = promedio_edad,
+                           fill = INDICADOR_MOROSO)) +
+  geom_col() +
+  labs(
+    title = "Promedio de edad según morosidad",
+    x = "Moroso",
+    y = "Promedio de edad"
+  ) +
+  scale_fill_manual(values = c("NO" = "steelblue", "SI" = "tomato")) +
+  theme_minimal()
+
+salario_morosidad <- moras %>%
+  group_by(INDICADOR_MOROSO) %>%
+  summarise(promedio_salario = mean(SALARIO, na.rm = TRUE))
+
+ggplot(salario_morosidad, aes(x = INDICADOR_MOROSO,
+                              y = promedio_salario,
+                              fill = INDICADOR_MOROSO)) +
+  geom_col() +
+  labs(
+    title = "Promedio de salario según morosidad",
+    x = "Moroso",
+    y = "Promedio de salario"
+  ) +
+  scale_fill_manual(values = c("NO" = "steelblue", "SI" = "tomato")) +
+  theme_minimal()
+
+#note que son los mismos gráficos que dieron en excel, por lo que no vale la pena realizar el mimso análisis otra vez, por lo que se omitirá
 ```
 
