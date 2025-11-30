@@ -18,3 +18,12 @@ moras <- read_csv("C:/Users/aless/OneDrive/Escritorio/Cursos de computación/Her
 View(moras)
 ```
 
+#Resumen 5 números
+```{r}
+resumen <- moras %>%
+  select(c(SALARIO, EDAD)) %>%
+  summary()
+resumen
+  
+```
+
