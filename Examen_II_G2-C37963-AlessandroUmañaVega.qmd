@@ -88,6 +88,7 @@ moda <- function(x) {
 moda_tipo <- moda(moras$TIPO_ASEGURAMIENTO)
 moras$TIPO_ASEGURAMIENTO[is.na(moras$TIPO_ASEGURAMIENTO)] <- moda_tipo
 view(moras)
+
 ```
 
 
@@ -157,6 +158,90 @@ moras %>%
   ) +
   theme_minimal()
 
-#note que son los mismo gráficos que los que hicimos en excel, por lo que sería el mismo análisis, por lo tanto no nos detendremos en volver a poner lo mismo.
+#note que son los mismo gráficos que los que hicimos en excel, por lo que sería el mismo análisis, por lo tanto no me detendré en volver a poner lo mismo.
+```
+
+#Gráficos morosidad según variables categóricas
+```{r}
+#lo que hacemos primero es hacer un agrupación por cada variable y con summarrise calculamos el porcentaje de morosidad que hay con mean donde solo lo calculamos cuando este es igual a "SI"
+gráfico_sexo <-moras %>%
+    group_by(SEXO) %>%
+    summarise(
+      porcentaje_moroso = mean(INDICADOR_MOROSO == "SI") * 100
+    ) %>%
+    ggplot(aes(x = SEXO, y = porcentaje_moroso)) +
+    geom_col(fill = "steelblue") +
+    labs(
+      title ="Porcentaje de morosos por sexo",
+      x = "Sexo",
+      y = "Porcentaje de morosos (%)"
+    ) +
+    theme_minimal()
+print(gráfico_sexo)
+
+gráfico_sector <-moras %>%
+    group_by(SECTOR) %>%
+    summarise(
+      porcentaje_moroso = mean(INDICADOR_MOROSO == "SI") * 100
+    ) %>%
+    ggplot(aes(x = SECTOR, y = porcentaje_moroso)) +
+    geom_col(fill = "steelblue") +
+    labs(
+      title ="Porcentaje de morosos por sector",
+      x = "Sector",
+      y = "Porcentaje de morosos (%)"
+    ) +
+    theme_minimal()
+print(gráfico_sector)
+
+#al igual que en el gráfico de tipo de aseguramiento anterior usamos str_wrap y coord flip para que sea legible el gráfico
+gráfico_tipo_aseguramiento <-moras %>%
+    group_by(TIPO_ASEGURAMIENTO) %>%
+    summarise(
+      porcentaje_moroso = mean(INDICADOR_MOROSO == "SI") * 100
+    ) %>%
+    ggplot(aes(x = str_wrap(TIPO_ASEGURAMIENTO, 15), y = porcentaje_moroso)) +
+    geom_col(fill = "steelblue") +
+    labs(
+      title ="Porcentaje de morosos por tipo de aseguramiento",
+      x = "TIpos de aseguramientos",
+      y = "Porcentaje de morosos (%)"
+    ) +
+    theme_minimal() + 
+    coord_flip()
+print(gráfico_tipo_aseguramiento)
+
+gráfico_activo <-moras %>%
+    group_by(INDICADOR_ACTIVO) %>%
+    summarise(
+      porcentaje_moroso = mean(INDICADOR_MOROSO == "SI") * 100
+    ) %>%
+    ggplot(aes(x = INDICADOR_ACTIVO, y = porcentaje_moroso)) +
+    geom_col(fill = "steelblue") +
+    labs(
+      title ="Porcentaje de morosos por si tienen activado su seguro o no",
+      x = "¿Tienen activado su seguro?",
+      y = "Porcentaje de morosos (%)"
+    ) +
+    theme_minimal()
+print(gráfico_activo)
+
+gráfico_extranjero <-moras %>%
+    group_by(INDICADOR.EXTRANJERO) %>%
+    summarise(
+      porcentaje_moroso = mean(INDICADOR_MOROSO == "SI") * 100
+    ) %>%
+    ggplot(aes(x = INDICADOR.EXTRANJERO, y = porcentaje_moroso)) +
+    geom_col(fill = "steelblue") +
+    labs(
+      title ="Porcentaje de morosos por si son extranjeros o no",
+      x = "¿Son extranjeros?",
+      y = "Porcentaje de morosos (%)"
+    ) +
+    theme_minimal()
+print(gráfico_sexo)
+
+#Note en este caso pasa igual, los gráficos son los mismos que en excel, por lo que se hará nuevamente el análisis
+
 ```
 
