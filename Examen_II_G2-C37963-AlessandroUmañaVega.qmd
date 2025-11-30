@@ -64,4 +64,28 @@ view(moras)
 #con col sums y is.na se calculara los na por columnas que hay en todas las columnas y adimas se divide por la cantidad de filas que hay y se multiplica por 100 para que quede en porcentaje
 colSums(is.na(moras))/nrow(moras)*100
 ```
+#Imputando los valores faltantes
+```{r}
+#usamos la funcion mean y is.na para imputar por la media los valores faltantes de la columna edad y salario
+moras$SALARIO[is.na(moras$SALARIO)] <- mean(moras$SALARIO, na.rm = TRUE)
+moras$EDAD[is.na(moras$EDAD)] <- mean(moras$EDAD, na.rm = TRUE)
+
+#se calcula la moda de los tipos de aseguramientos
+moda <- function(x) {
+  #crear una tabla donde nos diga la cantidad de veces que aparece cada tipo de aseguramiento
+  tabla <- table(x)
+  #encontrar la frecuencia máxima de cata tipo de aseguramiento
+  freq_max <- max(tabla)
+  #devuelve el tipo de aseguramiento con más repeticiones, donde lo que hace es crear un vector lógico que devuelve cuál de los diferentes tipos de aseguramiento es el que tiene más frecuencia.
+  moda_valor <- names(tabla)[tabla == freq_max]
+  #si hay varias modas, devuelve la primera que se ecnontró
+  return(moda_valor[1])
+}
+
+#se crea la variable moda_tipo donde se utiliza la funcion creada anteriormente y se pone de criterio la columna tipo aseguramiento para poder calcular la moda
+#después lo que hacemos es con is.na decimos que los valores faltantes en esta columna se van a reemplazar con la moda que se encontro en la línea de arriba
+moda_tipo <- moda(moras$TIPO_ASEGURAMIENTO)
+moras$TIPO_ASEGURAMIENTO[is.na(moras$TIPO_ASEGURAMIENTO)] <- moda_tipo
+view(moras)
+```
 
