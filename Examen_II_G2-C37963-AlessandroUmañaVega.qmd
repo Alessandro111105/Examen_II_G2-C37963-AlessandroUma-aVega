@@ -1,0 +1,20 @@
+---
+title: "Examen_II_G2-C37963-AlessandroUma-aVega"
+author: "Alessandro Umaña Vega"
+format: html
+editor: visual
+---
+#Librerías
+```{r}
+#se agrega las librerías que se usarán
+library(readr)
+library(tidyverse)
+```
+ 
+#Carga la base de datos
+```{r}
+#se carga la base de datos moras en R
+moras <- read_csv("C:/Users/aless/OneDrive/Escritorio/Cursos de computación/Herramientas de Datos I/Examen virtual 2/moras.txt")
+View(moras)
+```
+
