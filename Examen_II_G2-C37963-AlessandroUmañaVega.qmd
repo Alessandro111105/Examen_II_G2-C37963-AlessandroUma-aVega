@@ -13,17 +13,48 @@ library(tidyverse)
  
 #Carga la base de datos
 ```{r}
-#se carga la base de datos moras en R
-moras <- read_csv("C:/Users/aless/OneDrive/Escritorio/Cursos de computación/Herramientas de Datos I/Examen virtual 2/moras.txt")
-View(moras)
+#se carga el archivo excel y se pone que el salario es una variable de tipo character para que aparezca la coma de los salarios
+moras <- read_csv("C:/Users/aless/OneDrive/Escritorio/Cursos de computación/Herramientas de Datos I/Examen virtual 2/moras.txt", 
+    col_types = cols(SALARIO = col_character()))
+
+#se usa la funcion gsub para cambiar la coma por un punto y despues se pone la columna que se quiere cambiar
+moras$SALARIO <- gsub(",", ".", moras$SALARIO)
+
+#se cambia el tipo de variable de la columna a una de tipo numérico
+moras$SALARIO <- as.numeric(moras$SALARIO)
+view(moras)
 ```
 
 #Resumen 5 números
 ```{r}
+#se crea resumen donde se calculara las 5 variables usando summary y select para que resuma solamente las variables que se deseen.
 resumen <- moras %>%
   select(c(SALARIO, EDAD)) %>%
   summary()
 resumen
+
+
   
+```
+
+#Z-score
+```{r}
+#con mutate se creara las dos columnas con los valores atípicos haciendo uso de funciones como mean y sd para calcular la desviación estandar, también se usará la funcion abs para sacar el valor absoluto del resultado del z-score.
+
+#note que en R los valores faltantes no son 0 en como en excel son NA, por lo que al calcular su z-score seguirán siendo NA
+moras <- moras %>%
+  mutate(
+    z_salario =(moras$SALARIO-mean(moras$SALARIO, na.rm = TRUE))/ sd(moras$SALARIO, na.rm = TRUE),
+    z_edad =(moras$EDAD-mean(moras$EDAD, na.rm = TRUE))/ sd(moras$EDAD, na.rm = TRUE)
+  )
+
+#ahora con esas variables ya creadas se crearan las variables para verificiar si son mayores o menores a 1,96 que retornará un true o false
+moras <- moras %>%
+  mutate(
+    atipico_salario=(abs(z_salario) > 1.96),
+    atipico_edad=(abs(z_edad) > 1.96)
+  )
+
+view(moras)
 ```
 
