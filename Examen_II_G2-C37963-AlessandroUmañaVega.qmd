@@ -9,6 +9,7 @@ editor: visual
 #se agrega las librerías que se usarán
 library(readr)
 library(tidyverse)
+library(ggplot2)
 ```
  
 #Carga la base de datos
@@ -87,5 +88,75 @@ moda <- function(x) {
 moda_tipo <- moda(moras$TIPO_ASEGURAMIENTO)
 moras$TIPO_ASEGURAMIENTO[is.na(moras$TIPO_ASEGURAMIENTO)] <- moda_tipo
 view(moras)
+```
+
+
+#Gráficos cantidad de individuos por categoría
+```{r}
+#se usa la estructura básica para crear todos los gráficos segun el individuo, la base de datos, ggplot con el aes, despues se escoge el tipo de gráfico que en este caso sera uno de barras, se escribe el titulo, el nombre de los ejes y el theme minimal para que se vea mejor.
+
+#también en el caso de tipos de aseguramiento usamos str_wrap para que el nombre no quede tan largo y se pueda dividir, donde ponemos que sea 15 para que el largo no sobre pase ese número y coord flip para que no se vea recargado abajo.
+moras %>%
+  ggplot(aes(x =str_wrap(TIPO_ASEGURAMIENTO, 15))) +
+  geom_bar(fill = "steelblue") +
+  labs(
+    title = "Cantidad de individuos por tipo de aseguramiento",
+    x = "Categoría",
+    y = "Cantidad de individuos"
+  ) +
+  theme_minimal() +
+  coord_flip()
+
+moras %>%
+  ggplot(aes(x = SEXO)) +
+  geom_bar(fill = "steelblue") +
+  labs(
+    title = "Cantidad de individuos por sexo",
+    x = "Sexo",
+    y = "Cantidad de individuos"
+  ) +
+  theme_minimal()
+
+moras %>%
+  ggplot(aes(x = SECTOR)) +
+  geom_bar(fill = "steelblue") +
+  labs(
+    title = "Cantidad de individuos por sector",
+    x = "Sector",
+    y = "Cantidad"
+  ) +
+  theme_minimal()
+
+moras %>%
+  ggplot(aes(x = INDICADOR_ACTIVO)) + 
+  geom_bar(fill = "steelblue") +
+  labs(
+    title= "Cantidad de individuos según si tienen activado su seguro",
+    x= "¿Tiene el seguro activo?",
+    y= "Cantidad de individuos"
+  ) + 
+  theme_minimal()
+
+moras %>%
+  ggplot(aes(x =INDICADOR.EXTRANJERO)) +
+  geom_bar(fill = "steelblue") +
+  labs(
+    title = "Cantidad de individuos según condición de extranjero",
+    x = "¿Es extranjero?",
+    y = "Cantidad de individuos"
+  ) +
+  theme_minimal()
+
+moras %>%
+  ggplot(aes(x = INDICADOR_MOROSO)) +
+  geom_bar(fill = "steelblue") +
+  labs(
+    title = "Cantidad de individuos según condición de morosidad",
+    x = "¿Es moroso?",
+    y = "Cantidad de individuos"
+  ) +
+  theme_minimal()
+
+#note que son los mismo gráficos que los que hicimos en excel, por lo que sería el mismo análisis, por lo tanto no nos detendremos en volver a poner lo mismo.
 ```
 
